@@ -16,12 +16,19 @@ INTEREST_LABELS = {"subscription": "Подписка", "order": "Разовый 
 MESSAGE_CHUNK_SIZE = 2000
 
 
+def display_phone(value: str) -> str:
+    """Show a validated Belarus E.164 number in a readable form."""
+    if len(value) == 13 and value.startswith("+375") and value[1:].isdigit():
+        return f"+375 ({value[4:6]}) {value[6:9]}-{value[9:11]}-{value[11:13]}"
+    return value
+
+
 def format_lead_notification(lead_id: int, data: dict[str, Any]) -> str:
     """Format validated contact details and attribution as plain text."""
     lines = [
         f"Новая заявка №{lead_id}",
         f"Имя: {data['name']}",
-        f"Телефон: {data['phone']}",
+        f"Телефон: {display_phone(data['phone'])}",
         f"Интерес: {INTEREST_LABELS[data['interest']]}",
         f"Комментарий: {data.get('comment') or '-'}",
     ]
@@ -30,7 +37,7 @@ def format_lead_notification(lead_id: int, data: dict[str, Any]) -> str:
     lines.extend(
         f"{label}: {data[key]}"
         for key, label in (("referrer", "Источник перехода"), ("landing_path", "Страница входа"))
-        if data.get(key)
+        if data.get(key) and (key != "landing_path" or data[key] != "/")
     )
     return "\n".join(lines)
 

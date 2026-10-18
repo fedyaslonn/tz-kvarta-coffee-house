@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
-import { COMMENT_LIMIT, FORM_TIMEOUT_MS, composeComment, parseLeadResult, validateFields, type FieldErrors, type LeadFields } from '@/lib/lead-form';
+import { COMMENT_LIMIT, FORM_TIMEOUT_MS, composeComment, formatBelarusPhone, parseLeadResult, validateFields, type FieldErrors, type LeadFields } from '@/lib/lead-form';
 import type { Interest } from '@/lib/content';
 import { useOrder } from './order-context';
 import styles from './lead-form.module.css';
@@ -78,10 +78,11 @@ export function LeadForm() {
         </div>
         <div className={styles.field}>
           <label htmlFor="phone">Телефон</label>
-          <input id="phone" name="phone" type="tel" inputMode="tel" required maxLength={40} autoComplete="tel" placeholder="+375 29 123-45-67"
+          <input id="phone" name="phone" type="tel" inputMode="tel" required maxLength={40} autoComplete="tel" placeholder="+375 (29) 123-45-67"
             value={fields.phone} onChange={event => setFields({ ...fields, phone: event.target.value })}
+            onBlur={() => setFields(previous => ({ ...previous, phone: formatBelarusPhone(previous.phone) }))}
             aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'phone-hint phone-error' : 'phone-hint'} />
-          <p id="phone-hint" className={styles.hint}>Белорусский мобильный или городской с кодом.</p>
+          <p id="phone-hint" className={styles.hint}>Белорусский мобильный или городской с кодом. Полный номер оформим как +375 (29) 123-45-67.</p>
           {error('phone')}
         </div>
       </div>

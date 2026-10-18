@@ -6,6 +6,15 @@ export type LeadResult = { ok: true; duplicate: boolean } | { ok: false; errors:
 export const COMMENT_LIMIT = 600;
 export const FORM_TIMEOUT_MS = 15_000;
 
+/** Format only complete Belarus numbers, so typing and editing stay predictable. */
+export function formatBelarusPhone(value: string): string {
+  if (!/^\+?[0-9() -]+$/.test(value.trim())) return value;
+  const digits = value.replace(/\D/g, '');
+  const local = digits.length === 9 && !value.trim().startsWith('+')
+    ? digits : digits.length === 12 && digits.startsWith('375') ? digits.slice(3) : null;
+  return local === null ? value : `+375 (${local.slice(0, 2)}) ${local.slice(2, 5)}-${local.slice(5, 7)}-${local.slice(7)}`;
+}
+
 export function composeComment(comment: string, product?: string): string {
   return [product ? `Выбран кофе: ${product}.` : '', comment.trim()].filter(Boolean).join('\n');
 }
