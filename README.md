@@ -15,3 +15,16 @@
 ## Почему PostgreSQL
 
 PostgreSQL выбрана как БД для заявок, потому как есть хороший опыт работы с ней, надежна для транзакций параллельных.
+
+## Скрины
+
+<img width="932" height="590" alt="image" src="https://github.com/user-attachments/assets/e623987c-f6e2-49b3-ae65-448f98014d98" />
+
+<img width="920" height="562" alt="image" src="https://github.com/user-attachments/assets/0a8c4b88-488d-4bc3-8c45-31ef511534af" />
+
+<img width="928" height="592" alt="image" src="https://github.com/user-attachments/assets/9e045b21-c52b-4568-9aba-c6486d293e83" />
+
+<img width="1280" height="671" alt="image" src="https://github.com/user-attachments/assets/7e6c9fd3-259a-4bd0-a275-0ffc5ed69f34" />
+
+<img width="1280" height="671" alt="image" src="https://github.com/user-attachments/assets/5889c275-cb78-4508-8f14-fc794a1457a6" />
+
