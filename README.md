@@ -26,7 +26,7 @@ PostgreSQL выбрана как БД для заявок, потому как �
 
 <img width="1280" height="671" alt="image" src="https://github.com/user-attachments/assets/7e6c9fd3-259a-4bd0-a275-0ffc5ed69f34" />
 
-<img width="1280" height="671" alt="image" src="https://github.com/user-attachments/assets/5889c275-cb78-4508-8f14-fc794a1457a6" />
+<img width="1280" height="656" alt="image" src="https://github.com/user-attachments/assets/e2902de1-7258-4883-9a17-740772257150" />
 
 <img width="945" height="609" alt="image" src="https://github.com/user-attachments/assets/a2271bdb-7fb6-43f8-84f9-a67eb748d569" />
 
