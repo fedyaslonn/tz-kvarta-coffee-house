@@ -10,7 +10,9 @@ def normalize_asyncpg_url(value: str | None) -> str | None:
     if value is None:
         return None
     url = make_url(value)
-    if url.drivername != "postgresql+asyncpg":
+    if url.drivername == "postgresql":
+        url = url.set(drivername="postgresql+asyncpg")
+    elif url.drivername != "postgresql+asyncpg":
         raise ValueError("DATABASE_URL must use the postgresql+asyncpg driver")
     query = dict(url.query)
     sslmode = query.pop("sslmode", None)
