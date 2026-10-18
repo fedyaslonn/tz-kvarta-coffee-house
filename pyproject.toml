@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "kvarta-backend"
+version = "0.1.0"
+description = "Kvarta Coffee Roastery Lead API"
+authors = ["Your Name <you@example.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.13,<3.15"
+fastapi = "^0.143.3"
+uvicorn = "^0.54.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.1.5"}
+asyncpg = "^0.32.0"
+marshmallow = "^4.3.1"
+pydantic-settings = "^2.16.0"
+alembic = "^1.20.0"
+phonenumbers = "^9.0.41"
+aiogram = ">=3.27,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^26.10.1"
+isort = "^9.0.2"
+flake8 = "^7.4.1"
+flake8-bugbear = "^26.9.30"
+flake8-docstrings = "^1.7.0"
+flake8-use-fstring = "^1.4"
+mypy = "^2.4.0"
+pre-commit = "^4.7.0"
+
+[tool.black]
+line-length = 120
+target-version = ["py313"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

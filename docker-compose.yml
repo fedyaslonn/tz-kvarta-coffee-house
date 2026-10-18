@@ -1,0 +1,78 @@
+x-api-image: &api-image
+  image: kvarta-api:local
+  build:
+    context: .
+    dockerfile: backend/Dockerfile
+    target: runtime
+  environment: &api-environment
+    DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-kvarta}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-kvarta_leads}
+    ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+    APP_VERSION: ${APP_VERSION:-0.1.0}
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kvarta}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-kvarta_leads}
+    volumes:
+      - kvarta-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [kvarta-net]
+
+  migrate:
+    <<: *api-image
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [kvarta-net]
+
+  api:
+    <<: *api-image
+    restart: unless-stopped
+    environment:
+      <<: *api-environment
+      TG_TOKEN: ${TG_TOKEN:-}
+      TG_CHAT_ID: ${TG_CHAT_ID:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    networks: [kvarta-net]
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+      args:
+        SITE_URL: ${SITE_URL:-}
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      API_INTERNAL_URL: http://api:8000
+    ports: ["127.0.0.1:3000:3000"]
+    networks: [kvarta-net]
+
+volumes:
+  kvarta-pgdata:
+
+networks:
+  kvarta-net:
+    driver: bridge
