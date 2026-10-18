@@ -2,6 +2,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request): Promise<Response> {
+  const proxyRequestId = crypto.randomUUID();
   try {
     const upstream = await fetch(new URL('/api/lead', process.env.API_INTERNAL_URL ?? 'http://127.0.0.1:8000'), {
       method: 'POST',
@@ -19,10 +20,14 @@ export async function POST(request: Request): Promise<Response> {
     const requestId = upstream.headers.get('x-request-id');
     if (requestId) headers.set('X-Request-ID', requestId);
     return new Response(await upstream.text(), { status: upstream.status, headers });
-  } catch {
+  } catch (error) {
+    console.error('Lead API proxy failed', {
+      requestId: proxyRequestId,
+      errorType: error instanceof Error ? error.name : 'UnknownError',
+    });
     return Response.json(
       { ok: false, error: 'Сервис временно недоступен. Повторите отправку через минуту.' },
-      { status: 503 },
+      { status: 503, headers: { 'X-Request-ID': proxyRequestId } },
     );
   }
 }
