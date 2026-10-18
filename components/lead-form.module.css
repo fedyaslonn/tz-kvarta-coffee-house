@@ -1,0 +1,25 @@
+.form { scroll-margin-top: 24px; }
+.fields { min-width: 0; padding: 0; border: 0; margin: 0; display: grid; gap: var(--space-6); }
+.row { display: grid; gap: 24px; }
+.field { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.field label { font-size: 14px; font-weight: 500; }
+.field input, .field textarea, .field select { width: 100%; min-height: var(--control-height); border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--paper-light); color: var(--ink); padding: 14px; font: inherit; font-size: var(--text-base); }
+.field textarea { resize: vertical; line-height: 1.6; }
+.field select { cursor: pointer; }
+.field input::placeholder, .field textarea::placeholder { color: #767064; opacity: 1; }
+.field [aria-invalid=true] { border-color: var(--error); }
+.optional { font-weight: 400; color: var(--muted); margin-left: 5px; }
+.hint { font-size: 12px; line-height: 1.5; color: var(--muted); margin: 0; }
+.form > .hint { margin-top: 14px; max-width: 40ch; }
+.selected { padding: 13px 15px; border-left: 2px solid var(--clay); background: var(--paper); display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; }
+.remove { border: 0; background: transparent; color: var(--clay); font: inherit; padding: 10px 2px; cursor: pointer; min-height: 44px; flex-shrink: 0; }
+.remove span { font-size: 20px; margin-left: 4px; }
+.submit { display: flex; align-items: center; justify-content: space-between; width: 100%; background: var(--clay); color: var(--paper-light); padding: 17px 22px; min-height: 58px; border: 1px solid var(--clay); border-radius: 2px; font: inherit; font-weight: 500; cursor: pointer; transition: background 150ms ease; }
+.submit:hover { background: var(--clay-dark); }
+.submit span { font-size: 24px; line-height: 1; }
+.submit:disabled { opacity: .65; cursor: wait; }
+.error { color: var(--error); font-size: 13px; line-height: 1.6; margin: 0; }
+.feedback { font-size: 15px; line-height: 1.65; margin: 0; }
+.feedback:not(:empty) { padding-top: 20px; }
+.success { color: #3e513a; }
+@media (min-width: 600px) { .row { grid-template-columns: 1fr 1fr; gap: 16px; } }
