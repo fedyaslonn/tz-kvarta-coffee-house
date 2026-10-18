@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "next build",
+    "build": "npm run lint && next build",
     "start": "node scripts/start-web.mjs",
     "lint": "eslint app components lib",
     "typecheck": "tsc --noEmit",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
+    "@next/eslint-plugin-next": "15.5.4",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

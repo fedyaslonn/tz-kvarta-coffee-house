@@ -13,10 +13,16 @@ from backend.models import Base
 target_metadata = Base.metadata
 
 
+def migration_database_url() -> str:
+    """Use a direct database connection for schema changes when one is configured."""
+    settings = Settings()
+    return settings.MIGRATION_DATABASE_URL or settings.DATABASE_URL
+
+
 def run_offline() -> None:
     """Emit SQL without connecting."""
     context.configure(
-        url=Settings().DATABASE_URL,
+        url=migration_database_url(),
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -27,7 +33,7 @@ def run_offline() -> None:
 
 async def run_online() -> None:
     """Apply migrations with a dedicated short-lived connection."""
-    engine = create_async_engine(Settings().DATABASE_URL, poolclass=pool.NullPool, hide_parameters=True)
+    engine = create_async_engine(migration_database_url(), poolclass=pool.NullPool, hide_parameters=True)
     try:
         async with engine.connect() as connection:
 

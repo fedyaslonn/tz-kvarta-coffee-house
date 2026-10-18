@@ -43,6 +43,7 @@ export function firstTouch(
     try {
       saved = JSON.parse(storage.getItem(STORAGE_KEY) ?? 'null');
     } catch {
+      // Corrupted or inaccessible sessionStorage starts a fresh attribution record.
     }
     if (saved && typeof saved === 'object') {
       const value = saved as Partial<Attribution>;
@@ -55,6 +56,7 @@ export function firstTouch(
     }
     storage.setItem(STORAGE_KEY, JSON.stringify(current));
   } catch {
+    // Storage can be unavailable in private or embedded browser contexts.
   }
   return current;
 }
